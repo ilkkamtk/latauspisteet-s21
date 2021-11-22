@@ -17,19 +17,19 @@ const options = {
 };
 
 // funktio markerien tekoon
-function lisaaMarker(latitude, longitude) {
+function lisaaMarker(latitude, longitude, teksti) {
   L.marker([latitude, longitude]).
       addTo(map).
-      bindPopup('Olen tässä.').
-      openPopup();
+      bindPopup(teksti);
 }
 
 // Funktio, joka ajetaan, kun paikkatiedot on haettu
 function success(pos) {
   const crd = pos.coords;
   haeLatauspisteet(crd.latitude, crd.longitude);
-  map.setView([crd.latitude, crd.longitude], 15);
-  lisaaMarker(crd.latitude, crd.longitude);
+  map.setView([crd.latitude, crd.longitude], 12);
+  // lisätään markkeri omaan lokaatioon
+  lisaaMarker(crd.latitude, crd.longitude, 'Olen tässä');
 }
 
 // Funktio, joka ajetaan, jos paikkatietojen hakemisessa tapahtuu virhe
@@ -51,7 +51,8 @@ function haeLatauspisteet(latitude, longitude) {
     for (let i = 0; i < latauspisteet.length; i++) {
       const latitude = latauspisteet[i].AddressInfo.Latitude;
       const longitude = latauspisteet[i].AddressInfo.Longitude;
-      lisaaMarker(latitude, longitude);
+      const teksti = latauspisteet[i].AddressInfo.Title;
+      lisaaMarker(latitude, longitude, teksti);
     }
   });
 }
