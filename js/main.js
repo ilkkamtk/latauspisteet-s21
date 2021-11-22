@@ -27,10 +27,10 @@ function lisaaMarker(latitude, longitude, teksti, info) {
       addTo(map).
       bindPopup(teksti).
       on('click', function() {
-        nimi.innerHTML = info.nimi;
-        osoite.innerHTML = info.osoite;
-        kaupunki.innerHTML = info.kaupunki;
-        lisatiedot.innerHTML = info.lisatiedot;
+        nimi.innerHTML = info?.nimi || 'Olet tässä';
+        osoite.innerHTML = info?.osoite || '';
+        kaupunki.innerHTML = info?.kaupunki || '';
+        lisatiedot.innerHTML = info?.lisatiedot || '';
       });
 }
 
