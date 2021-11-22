@@ -30,13 +30,14 @@ const options = {
 
 // funktio markerien tekoon
 function lisaaMarker(latitude, longitude, teksti, ikoni, info, origin) {
-  const googleOsoite = 'https://www.google.com/maps/dir/?api=1';
-  const parametrit = `&origin=${origin.latitude},${origin.longitude}&destination=${latitude},${longitude}&travelmode=driving`;
-
   teksti = `<h3>${teksti}</h3>`;
-  teksti += `<div>
+  if(origin) {
+    const googleOsoite = 'https://www.google.com/maps/dir/?api=1';
+    const parametrit = `&origin=${origin.latitude},${origin.longitude}&destination=${latitude},${longitude}&travelmode=driving`;
+    teksti += `<div>
                 <a href="${googleOsoite + parametrit}" target="_blank">Navigoi</a>
             </div>`
+  }
   L.marker([latitude, longitude], {icon: ikoni}).
       addTo(map).
       bindPopup(teksti).
@@ -45,8 +46,6 @@ function lisaaMarker(latitude, longitude, teksti, ikoni, info, origin) {
         osoite.innerHTML = info?.osoite || '';
         kaupunki.innerHTML = info?.kaupunki || '';
         lisatiedot.innerHTML = info?.lisatiedot || '';
-
-        navigoi.href = googleOsoite + parametrit;
       });
 }
 
