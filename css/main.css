@@ -39,7 +39,7 @@ article {
     justify-content: flex-end;
 }
 
-#navigoi a {
+#navigoi a, .leaflet-popup-content a {
     display: block;
     line-height: 3rem;
     text-align: center;
