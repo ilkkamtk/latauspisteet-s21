@@ -15,8 +15,6 @@ const osoite = document.querySelector('#osoite');
 const kaupunki = document.querySelector('#kaupunki');
 const lisatiedot = document.querySelector('#lisatiedot');
 
-const navigoi = document.querySelector('#navigoi a');
-
 // kustom markkerit
 const vihreaikoni = L.divIcon({className: 'vihrea-ikoni'});
 const punainenikoni = L.divIcon({className: 'punainen-ikoni'});
