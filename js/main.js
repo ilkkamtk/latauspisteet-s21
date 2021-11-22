@@ -9,6 +9,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
 
+const nimi = document.querySelector('#nimi');
+const osoite = document.querySelector('#osoite');
+const kaupunki = document.querySelector('#kaupunki');
+const lisatiedot = document.querySelector('#lisatiedot');
+
 // Asetukset paikkatiedon hakua varten (valinnainen)
 const options = {
   enableHighAccuracy: true,
@@ -17,10 +22,16 @@ const options = {
 };
 
 // funktio markerien tekoon
-function lisaaMarker(latitude, longitude, teksti) {
+function lisaaMarker(latitude, longitude, teksti, info) {
   L.marker([latitude, longitude]).
       addTo(map).
-      bindPopup(teksti);
+      bindPopup(teksti).
+      on('click', function() {
+        nimi.innerHTML = info.nimi;
+        osoite.innerHTML = info.osoite;
+        kaupunki.innerHTML = info.kaupunki;
+        lisatiedot.innerHTML = info.lisatiedot;
+      });
 }
 
 // Funktio, joka ajetaan, kun paikkatiedot on haettu
@@ -49,10 +60,26 @@ function haeLatauspisteet(latitude, longitude) {
   }).then(function(latauspisteet) {
     console.log(latauspisteet);
     for (let i = 0; i < latauspisteet.length; i++) {
+      /*
       const latitude = latauspisteet[i].AddressInfo.Latitude;
       const longitude = latauspisteet[i].AddressInfo.Longitude;
       const teksti = latauspisteet[i].AddressInfo.Title;
-      lisaaMarker(latitude, longitude, teksti);
+       */
+      const {
+        Latitude,
+        Longitude,
+        Title,
+        AddressLine1,
+        Town,
+        AccessComments,
+      } = latauspisteet[i].AddressInfo;
+      const info = {
+        nimi: Title,
+        osoite: AddressLine1,
+        kaupunki: Town,
+        lisatiedot: AccessComments,
+      };
+      lisaaMarker(Latitude, Longitude, Title, info);
     }
   });
 }
