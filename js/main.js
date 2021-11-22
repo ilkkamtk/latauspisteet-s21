@@ -9,10 +9,15 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
 
+// lisätiedot kuvan alle
 const nimi = document.querySelector('#nimi');
 const osoite = document.querySelector('#osoite');
 const kaupunki = document.querySelector('#kaupunki');
 const lisatiedot = document.querySelector('#lisatiedot');
+
+// kustom markkerit
+const vihreaikoni = L.divIcon({className: 'vihrea-ikoni'});
+const punainenikoni = L.divIcon({className: 'punainen-ikoni'});
 
 // Asetukset paikkatiedon hakua varten (valinnainen)
 const options = {
@@ -22,8 +27,8 @@ const options = {
 };
 
 // funktio markerien tekoon
-function lisaaMarker(latitude, longitude, teksti, info) {
-  L.marker([latitude, longitude]).
+function lisaaMarker(latitude, longitude, teksti, ikoni, info) {
+  L.marker([latitude, longitude], {icon: ikoni}).
       addTo(map).
       bindPopup(teksti).
       on('click', function() {
@@ -40,7 +45,7 @@ function success(pos) {
   haeLatauspisteet(crd.latitude, crd.longitude);
   map.setView([crd.latitude, crd.longitude], 12);
   // lisätään markkeri omaan lokaatioon
-  lisaaMarker(crd.latitude, crd.longitude, 'Olen tässä');
+  lisaaMarker(crd.latitude, crd.longitude, 'Olen tässä', punainenikoni);
 }
 
 // Funktio, joka ajetaan, jos paikkatietojen hakemisessa tapahtuu virhe
@@ -79,7 +84,7 @@ function haeLatauspisteet(latitude, longitude) {
         kaupunki: Town,
         lisatiedot: AccessComments,
       };
-      lisaaMarker(Latitude, Longitude, Title, info);
+      lisaaMarker(Latitude, Longitude, Title, vihreaikoni, info);
     }
   });
 }
