@@ -15,6 +15,8 @@ const osoite = document.querySelector('#osoite');
 const kaupunki = document.querySelector('#kaupunki');
 const lisatiedot = document.querySelector('#lisatiedot');
 
+const navigoi = document.querySelector('#navigoi a');
+
 // kustom markkerit
 const vihreaikoni = L.divIcon({className: 'vihrea-ikoni'});
 const punainenikoni = L.divIcon({className: 'punainen-ikoni'});
@@ -27,7 +29,7 @@ const options = {
 };
 
 // funktio markerien tekoon
-function lisaaMarker(latitude, longitude, teksti, ikoni, info) {
+function lisaaMarker(latitude, longitude, teksti, ikoni, info, origin) {
   L.marker([latitude, longitude], {icon: ikoni}).
       addTo(map).
       bindPopup(teksti).
@@ -36,6 +38,10 @@ function lisaaMarker(latitude, longitude, teksti, ikoni, info) {
         osoite.innerHTML = info?.osoite || '';
         kaupunki.innerHTML = info?.kaupunki || '';
         lisatiedot.innerHTML = info?.lisatiedot || '';
+
+        const googleOsoite = 'https://www.google.com/maps/dir/?api=1';
+        const parametrit = `&origin=${origin.latitude},${origin.longitude}&destination=${latitude},${longitude}&travelmode=driving`;
+        navigoi.href = googleOsoite + parametrit;
       });
 }
 
@@ -84,7 +90,7 @@ function haeLatauspisteet(latitude, longitude) {
         kaupunki: Town,
         lisatiedot: AccessComments,
       };
-      lisaaMarker(Latitude, Longitude, Title, vihreaikoni, info);
+      lisaaMarker(Latitude, Longitude, Title, vihreaikoni, info, {latitude, longitude});
     }
   });
 }
